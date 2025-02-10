@@ -280,17 +280,30 @@
     }
 
     .coin-icon {
-        width: 16px;
-        height: 16px;
+        width: 12px;  /* Reducido de 16px a 12px */
+        height: 12px; /* Reducido de 16px a 12px */
         object-fit: contain;
         display: inline-flex;
         align-self: center;
-        margin-top: -2px; /* Ajustamos a -2px para subirlo un poco más */
-        vertical-align: middle; /* Añadimos esta propiedad */
-        position: relative; /* Añadimos posición relativa */
-        top: -1px; /* Ajuste fino adicional */
+        margin-top: -2px;
+        vertical-align: middle;
+        position: relative;
+        top: -1px;
+        animation: coinGlow 5s infinite;
+        filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.5));
     }
 
+    @keyframes coinGlow {
+        0% {
+            filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.5));
+        }
+        50% {
+            filter: drop-shadow(0 0 8px rgba(255, 215, 0, 0.8));
+        }
+        100% {
+            filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.5));
+        }
+                                 }
     </style>
 </head>
 <body>
