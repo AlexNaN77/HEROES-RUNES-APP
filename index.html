@@ -569,32 +569,7 @@
 
 <script>
 // Parallax suave
-let lastScrollTop = 0;
-window.addEventListener('scroll', function() {
-    const scrolled = window.pageYOffset;
-    const parallax = document.querySelector('.parallax-bg');
-    const delta = scrolled - lastScrollTop;
-    lastScrollTop = scrolled;
-    
-    window.requestAnimationFrame(function() {
-        parallax.style.transform = 'translateY(' + (scrolled * 0.5) + 'px)';
-    });
-});
 
-// Animación de fade-in al hacer scroll
-function fadeInOnScroll() {
-    const elements = document.querySelectorAll('.fade-in');
-    elements.forEach(element => {
-        const elementTop = element.getBoundingClientRect().top;
-        const elementBottom = element.getBoundingClientRect().bottom;
-        if (elementTop < window.innerHeight && elementBottom > 0) {
-            element.classList.add('visible');
-        }
-    });
-}
-
-window.addEventListener('scroll', fadeInOnScroll);
-window.addEventListener('load', fadeInOnScroll);
 
 // Funciones del popup
 function showPopup(runeName, runeDescription, runePrice, runeImage) {
@@ -633,14 +608,6 @@ document.getElementById('runePopup').addEventListener('click', function(e) {
     if (e.target === this) {
         closePopup();
     }
-});
-
-// Aplicar la clase fade-in a los elementos que quieres animar
-document.addEventListener('DOMContentLoaded', function() {
-    const sections = document.querySelectorAll('section');
-    sections.forEach(section => {
-        section.classList.add('fade-in');
-    });
 });
 </script>
 
