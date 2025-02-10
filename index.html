@@ -271,6 +271,118 @@
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
 
+
+        
+
+        /* Mejoras en animaciones y efectos suaves */
+        .clan-container {
+            opacity: 0;
+            transform: translateY(30px);
+            animation: fadeInUp 0.6s ease forwards;
+            background: rgba(0, 0, 0, 0.5);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Animación paralax con CSS puro */
+        .parallax-bg {
+            background-attachment: fixed;
+            transform: none;
+            height: 100%;
+            will-change: transform;
+        }
+
+        /* Mejoras en las tarjetas */
+        .rune-card {
+            transform: perspective(1000px) translateZ(0);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            backface-visibility: hidden;
+        }
+
+        .rune-card:hover {
+            transform: perspective(1000px) translateZ(20px) translateY(-5px);
+            box-shadow: 
+                0 5px 15px rgba(0,0,0,0.3),
+                0 0 20px rgba(255,255,255,0.1);
+        }
+
+        /* Animación para los slots de clan */
+        .clan-slot {
+            opacity: 0;
+            transform: translateX(-20px);
+            animation: slideIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+            animation-delay: calc(var(--order) * 0.1s);
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        /* Mejora en el efecto hover de los contenedores */
+        .clan-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 
+                0 10px 25px rgba(0,0,0,0.3),
+                0 0 30px rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        /* Mejora en las transiciones del popup */
+        .popup-overlay {
+            backdrop-filter: blur(8px);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .popup-content {
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        .popup-overlay.active .popup-content {
+            transform: scale(1);
+            opacity: 1;
+        }
+
+        /* Animación suave para el scroll */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Mejora en el efecto de los títulos */
+        .title-glow {
+            animation: titlePulse 3s infinite;
+        }
+
+        @keyframes titlePulse {
+            0% { text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+            50% { text-shadow: 0 0 20px rgba(255,255,255,0.8), 
+                             0 0 30px rgba(255,255,255,0.6); }
+            100% { text-shadow: 0 0 10px rgba(255,255,255,0.5); }
+        }
+   
+
     </style>
 </head>
 <body>
