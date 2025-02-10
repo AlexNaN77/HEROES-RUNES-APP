@@ -269,17 +269,24 @@
 .popup-content {
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
-        .coins-display {
-    display: flex;
-    align-items: center;
-    gap: 4px;
-}
+         .coins-display {
+        display: flex;
+        align-items: center; /* Esto ya existía */
+        gap: 4px;
+        font-size: 12px;
+        color: #FFD700;
+        text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        line-height: 1; /* Añadimos esta línea para ajustar la altura de línea */
+    }
 
-.coin-icon {
-    width: 16px;
-    height: 16px;
-    object-fit: contain;
-}
+    .coin-icon {
+        width: 16px;
+        height: 16px;
+        object-fit: contain;
+        display: inline-flex; /* Cambiamos a inline-flex */
+        align-self: center; /* Aseguramos centrado vertical */
+        margin-top: -1px; /* Pequeño ajuste fino para alinear perfectamente */
+    }
 
     </style>
 </head>
