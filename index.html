@@ -269,7 +269,7 @@
 .popup-content {
     transition: transform 0.3s ease, opacity 0.3s ease;
 }
-          .coins-display {
+        .coins-display {
         display: flex;
         align-items: center;
         gap: 4px;
@@ -280,15 +280,15 @@
     }
 
     .coin-icon {
-        width: 12px;  /* Reducido de 16px a 12px */
-        height: 12px; /* Reducido de 16px a 12px */
+        width: 12px;
+        height: 12px;
         object-fit: contain;
         display: inline-flex;
         align-self: center;
-        margin-top: -2px;
+        margin-top: -1px; /* Ajustado de -2px a -1px */
         vertical-align: middle;
         position: relative;
-        top: -1px;
+        top: 0px; /* Ajustado de -1px a 0px para bajar ligeramente la moneda */
         animation: coinGlow 5s infinite;
         filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.5));
     }
@@ -303,7 +303,8 @@
         100% {
             filter: drop-shadow(0 0 2px rgba(255, 215, 0, 0.5));
         }
-                                 }
+    }  
+                                 
     </style>
 </head>
 <body>
