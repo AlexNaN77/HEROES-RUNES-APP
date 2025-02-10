@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HEROES RUNES</title>
+    <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Press Start 2P', cursive;
+            background: #0a0a2a;
+            color: #ffffff;
+        }
+
+        .hero {
+            position: relative;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .clan-vega { color: #3B82F6; }      /* Azul */
+        .clan-arturo { color: #F59E0B; }    /* Amarillo */ 
+        .clan-sirius { color: #10B981; }    /* Verde */
+        .clan-antares { color: #EF4444; }   /* Rojo */
+
+        .parallax-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 120%;
+            background-image: url('https://i.postimg.cc/k56FPbZ4/photo-1462331940025-496dfbfc7564.jpg');
+            background-size: cover;
+            background-position: center;
+            transform: translateZ(-1px) scale(2);
+            z-index: -1;
+            filter: brightness(0.3);
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            background: 
+                radial-gradient(white, rgba(255,255,255,.2) 2px, transparent 40px),
+                radial-gradient(white, rgba(255,255,255,.15) 1px, transparent 30px),
+                radial-gradient(white, rgba(255,255,255,.1) 2px, transparent 40px);
+            background-size: 550px 550px, 350px 350px, 250px 250px;
+            animation: stars 10s linear infinite;
+        }
+
+        @keyframes stars {
+            0% { background-position: 0 0, 0 0, 0 0; }
+            100% { background-position: 550px 550px, 350px 350px, 250px 250px; }
+        }
+
+        .clan-slot {
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            min-height: 100px;
+            transition: all 0.3s ease;
+            margin-bottom: 15px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+        
+        }
+
+        .clan-slot:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+            border-color: rgba(255, 255, 255, 0.4);
+            transition: all 0.3s ease;
+        }
+
+        .slot-left {
+            flex-direction: row;
+        }
+
+        .slot-right {
+            flex-direction: row-reverse;
+        }
+
+        .rune-logo {
+            width: 60px;
+            height: 60px;
+            background: #1a1a1a;
+            border-radius: 50%;
+            margin: 0 15px;
+            flex-shrink: 0;
+            transition: all 0.3s ease;
+        }
+
+        .rune-name {
+            flex-grow: 1;
+            text-align: left;
+            font-size: 0.8em;
+        }
+
+        .rune-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.2);
+            transition: all 0.3s ease;
+            image-rendering: pixelated;
+        }
+
+        .rune-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.3);
+        }
+
+        .clan-container {
+            background: rgba(0, 0, 0, 0.5);
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .clan-container:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
+        }
+
+        .popup-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .popup-content {
+            background: rgba(30, 30, 50, 0.95);
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            position: relative;
+            animation: slideUp 0.3s ease;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        @keyframes slideUp {
+            from { transform: translateY(20px); opacity: 0; }
+            to { transform: translateY(0); opacity: 1; }
+        }
+
+        .text-glow {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        .coins-display {
+            font-size: 12px;
+            color: #FFD700;
+            text-shadow: 0 0 5px rgba(255, 215, 0, 0.5);
+        }
+
+        .title-big {
+            font-size: 48px;
+            letter-spacing: 2px;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+        }
+
+        @keyframes glowEffect {
+            0% { filter: brightness(1); }
+            50% { filter: brightness(1.5); }
+            100% { filter: brightness(1); }
+        }
+
+        .clan-header {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .clan-logo {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .clan-name {
+            animation: glowEffect 2s infinite;
+        }
+
+        .title-glow {
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.7),
+                         0 0 20px rgba(255, 255, 255, 0.5),
+                         0 0 30px rgba(255, 255, 255, 0.3);
+            animation: titleGlow 10s infinite;
+        }
+
+        @keyframes titleGlow {
+            0% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.7); }
+            50% { text-shadow: 0 0 20px rgba(255, 255, 255, 1),
+                           0 0 30px rgba(255, 255, 255, 0.8),
+                           0 0 40px rgba(255, 255, 255, 0.6); }
+            100% { text-shadow: 0 0 10px rgba(255, 255, 255, 0.7); }
+        }
+
+        .fade-in-section {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in-section.is-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+      
+
+
+    transition: all 0.3s ease;
+
+
+
+/* Animación suave para los elementos al hacer scroll */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Animación para las runas en el catálogo */
+.rune-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.rune-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Animación para el popup */
+.popup-overlay {
+    transition: opacity 0.3s ease;
+}
+
+.popup-content {
+    transition: transform 0.3s ease, opacity 0.3s ease;
+}
+
+    </style>
+</head>
+<body>
+    <div class="stars"></div>
+
+    <div class="parallax-wrapper">
+        <section class="hero">
+            <div class="parallax-bg"></div>
+            <div class="absolute inset-0 flex items-center justify-center text-center">
+                <div>
+                    <h1 class="title-big mb-8 title-glow">HEROES RUNES</h1>
+                    <p class="text-lg mb-8">Los powerups de esta temporada</p>
+                    <a href="#catalog" class="inline-block px-8 py-4 bg-blue-600 hover:bg-blue-700 transition duration-300">
+                        VER RUNAS
+                    </a>
+                </div>
+            </div>            
+        </section>
+    </div>
+
+    <div class="relative z-10 min-h-screen py-20 px-4">
+        <div class="container mx-auto max-w-7xl">
+            <section id="clans" class="mb-32 fade-in">
+                <h2 class="text-center text-2xl mb-16 text-glow">CLANES ACTIVOS</h2>
+                <div class="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
+                    <!-- Clan Vega -->
+                    <div class="clan-container">
+                        <div class="clan-header">
+                            <img src="https://i.postimg.cc/sDGd2hHg/Photo-Room-20250209-163733.png" alt="Vega Logo" class="clan-logo">
+                            <h3 class="text-xl clan-vega clan-name">VEGA</h3>
+                        </div>
+                        <p class="coins-display mb-4">100 H.COINS</p>
+                        <div class="clan-slot slot-left">
+                            <div class="rune-logo"></div>
+                            <span class="rune-name">SLOT VACÍO</span>
+                        </div>
+                        <div class="clan-slot slot-right">
+                            <div class="rune-logo"></div>
+                            <span class="rune-name">SLOT VACÍO</span>
+                        </div>
+                        <div class="clan-slot slot-left">
+                            <div class="rune-logo"></div>
+                            <span class="rune-name">SLOT VACÍO</span>
+                        </div>
+                        <div class="clan-slot slot-right">
+                            <div class="rune-logo"></div>
+                            <span class="rune-name">SLOT VACÍO</span>
+                        </div>
+                        <div class="clan-slot slot-left">
+                            <div class="rune-logo"></div>
+                            <span class="rune-name">SLOT VACÍO</span>
+                        </div>
+                    </div>
+
+                    <!-- Clan Arturo -->
+                    <div class="clan-container">
+                        <div class="clan-header">
+                            <img src="https://i.postimg.cc/C5W28crL/Photo-Room-20250209-163949.png" alt="Arturo Logo" class="clan-logo">
+                            <h3 class="text-xl clan-arturo clan-name">ARTURO</h3>
+                        </div>
+                        <p class="coins-display mb-4">100 H.COINS</p>
+                        <div class="clan-slot slot-left">
+                            <div class="rune-logo"></div>
+                            <span class="rune-name">SLOT VACÍO</span>
+                        </div>
+                        <div class="clan-slot slot-right">
+                            <div class="rune-logo"></div>
+                            <span class="rune-name">SLOT VACÍO</span>
+                        </div>
+                        <div class="clan-slot slot-left">
+                            <div class="rune-logo"></div>
+                            <span class="rune-name">SLOT VACÍO</span>
+                        </div>
+                        <div class="clan-slot slot-right">
+                            <div class="rune-logo"></div>
+                            <span class="rune-name">SLOT VACÍO</span>
+                        </div>
+                        <div class="clan-slot slot-left">
+                            <div class="rune-logo"></div>
+                            <span class="rune-name">SLOT VACÍO</span>
+                        </div>
+                    </div>
+
+                    <!-- Clan Sirius -->
+                    <div class="clan-container">
+                        <div class="clan-header">
+                            <img src="https://i.postimg.cc/3wBzqCNn/Photo-Room-20250209-163858.png" alt="Sirius Logo" class="clan-logo">
+                            <h3 class="text-xl clan-sirius clan-name">SIRIUS</h3>
+                        </div>
+                        <p class="coins-display mb-4">100 H.COINS</p>
+                        <div class="clan-slot slot-left">
+                            <div class="rune-logo"></div>
+                            <span class="rune-name">SLOT VACÍO</span>
+                        </div>
+                        <div class="clan-slot slot-right">
+                            <div class="rune-logo"></div>
+                            <span class="rune-name">SLOT VACÍO</span>
+                        </div>
+                        <div class="clan-slot slot-left">
+                            <div class="rune-logo"></div>
+                            <span class="rune-name">SLOT VACÍO</span>
+                        </div>
+                        <div class="clan-slot slot-right">
+                            <div class="rune-logo"></div>
+                            <span class="rune-name">SLOT VACÍO</span>
+                        </div>
+                        <div class="clan-slot slot-left">
+                            <div class="rune-logo"></div>
+                            <span class="rune-name">SLOT VACÍO</span>
+                        </div>
+                    </div>
+
+                    <!-- Clan Antares -->
+                    <div class="clan-container">
+                        <div class="clan-header">
+                            <img src="https://i.postimg.cc/q7xdTHbc/Photo-Room-20250209-163507.png" alt="Antares Logo" class="clan-logo">
+                            <h3 class="text-xl clan-antares clan-name">ANTARES</h3>
+                        </div>
+                        <p class="coins-display mb-4">100 H.COINS</p>
+                        <div class="clan-slot slot-left">
+                            <div class="rune-logo"></div>
+                            <span class="rune-name">SLOT VACÍO</span>
+                        </div>
+                        <div class="clan-slot slot-right">
+                            <div class="rune-logo"></div>
+                            <span class="rune-name">SLOT VACÍO</span>
+                        </div>
+                        <div class="clan-slot slot-left">
+                            <div class="rune-logo"></div>
+                            <span class="rune-name">SLOT VACÍO</span>
+                        </div>
+                        <div class="clan-slot slot-right">
+                            <div class="rune-logo"></div>
+                            <span class="rune-name">SLOT VACÍO</span>
+                        </div>
+                        <div class="clan-slot slot-left">
+                            <div class="rune-logo"></div>
+                            <span class="rune-name">SLOT VACÍO</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Popup -->
+            <div id="runePopup" class="popup-overlay">
+                <div class="popup-content">
+                    <button class="absolute top-4 right-4 text-white text-xl hover:text-gray-300 transition duration-300" onclick="closePopup()">×</button>
+                    <div class="rune-details">
+                        <img class="w-32 h-32 mx-auto mb-4" src="" alt="Runa">
+                        <h3 class="text-xl mb-4 text-center"></h3>
+                        <p class="mb-4 text-sm leading-relaxed"></p>
+                        <p class="coins-display text-center">Precio: <span></span> H.COINS</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Catálogo de Runas -->
+            <section id="catalog" class="py-20 fade-in">
+                <h2 class="text-2xl text-center mb-16 text-glow">CATÁLOGO DE RUNAS</h2>
+                
+                <!-- Runas Azules -->
+                <div class="mb-16">
+                    <h3 class="text-xl text-blue-400 mb-8">RUNAS AZULES</h3>
+                    <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-8">
+                        <!-- Walk Master -->
+                        <div class="rune-card p-4 rounded cursor-pointer" onclick="showPopup('WALK MASTER', 'Este Boost otorga un +10 Puntos si se supera a Polaris en Pasos y Correr', '3', 'https://i.postimg.cc/XJSsNrPt/Photo-Room-20250209-155538.png')">
+                            <img src="https://i.postimg.cc/XJSsNrPt/Photo-Room-20250209-155538.png" alt="Walk Master" class="h-32 w-full object-contain rounded mb-4">
+                            <h4 class="text-sm mb-2">WALK MASTER</h4>
+                            <p class="coins-display">3 H.COINS</p>
+                        </div>
+
+                        <!-- Master of Deepwork -->
+                        <div class="rune-card p-4 rounded cursor-pointer" onclick="showPopup('MASTER OF DEEPWORK', 'Este Boost otorga un +10 Puntos si se supera a Polaris en Deepwork', '3')">
+                            <div class="h-32 bg-blue-900 bg-opacity-30 rounded mb-4"></div>
+                            <h4 class="text-sm mb-2">MASTER OF DEEPWORK</h4>
+                            <p class="coins-display">3 H.COINS</p>
+                        </div>
+
+                        <!-- Master of Chill -->
+                        <div class="rune-card p-4 rounded cursor-pointer" onclick="showPopup('MASTER OF CHILL', 'Este Boost otorga un +10 Puntos si se supera a Polaris en Meditar', '3')">
+                            <div class="h-32 bg-blue-900 bg-opacity-30 rounded mb-4"></div>
+                            <h4 class="text-sm mb-2">MASTER OF CHILL</h4>
+                            <p class="coins-display">3 H.COINS</p>
+                        </div>
+
+                        <!-- Master of Reading -->
+                        <div class="rune-card p-4 rounded cursor-pointer" onclick="showPopup('MASTER OF READING', 'Este Boost otorga un +10 Puntos si se supera a Polaris en Lectura', '3')">
+                            <div class="h-32 bg-blue-900 bg-opacity-30 rounded mb-4"></div>
+                            <h4 class="text-sm mb-2">MASTER OF READING</h4>
+                            <p class="coins-display">3 H.COINS</p>
+                        </div>
+
+                        <!-- Super Runner -->
+                        <div class="rune-card p-4 rounded cursor-pointer" onclick="showPopup('SUPER RUNNER', 'Si una persona del clan llega a 185k de pasos en un día +10 Puntos, si no se logra -10 Puntos', '5')">
+                            <div class="h-32 bg-blue-900 bg-opacity-30 rounded mb-4"></div>
+                            <h4 class="text-sm mb-2">SUPER RUNNER</h4>
+                            <p class="coins-display">5 H.COINS</p>
+                        </div>
+
+                        <!-- Super Monk -->
+                        <div class="rune-card p-4 rounded cursor-pointer" onclick="showPopup('SUPER MONK', 'Si una persona del clan llega a 5h de meditar en un día +10 Puntos, si no se logra -10 Puntos', '5')">
+                            <div class="h-32 bg-blue-900 bg-opacity-30 rounded mb-4"></div>
+                            <h4 class="text-sm mb-2">SUPER MONK</h4>
+                            <p class="coins-display">5 H.COINS</p>
+                        </div>
+
+                        <!-- Super Reader -->
+                        <div class="rune-card p-4 rounded cursor-pointer" onclick="showPopup('SUPER READER', 'Si una persona del clan llega a 7h de Leer en un día +10 Puntos, si no se logra -10 Puntos', '5')">
+                            <div class="h-32 bg-blue-900 bg-opacity-30 rounded mb-4"></div>
+                            <h4 class="text-sm mb-2">SUPER READER</h4>
+                            <p class="coins-display">5 H.COINS</p>
+                        </div>
+
+                        <!-- Super Worker -->
+                        <div class="rune-card p-4 rounded cursor-pointer" onclick="showPopup('SUPER WORKER', 'Si una persona del clan llega a 8h de Deepwork en un día +10 Puntos, si no se logra -10 Puntos', '5')">
+                            <div class="h-32 bg-blue-900 bg-opacity-30 rounded mb-4"></div>
+                            <h4 class="text-sm mb-2">SUPER WORKER</h4>
+                            <p class="coins-display">5 H.COINS</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Runas Rojas -->
+                <div class="mb-16">
+                    <h3 class="text-xl text-red-400 mb-8">RUNAS ROJAS</h3>
+                    <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-8">
+                      
+
+<!-- Hiper Runners Duo -->
+<div class="rune-card p-4 rounded cursor-pointer" onclick="showPopup('HIPER RUNNERS DUO', 'Si dos personas del clan llegan a 10k de pasos en un día +2 Multi, si no se logra no se ganan puntos (se necesitan pruebas extra).', '10')">
+    <div class="h-32 bg-red-900 bg-opacity-30 rounded mb-4"></div>
+    <h4 class="text-sm mb-2">HIPER RUNNERS DUO</h4>
+    <p class="coins-display">10 H.COINS</p>
+</div>
+
+<!-- Hiper Monks Duo -->
+<div class="rune-card p-4 rounded cursor-pointer" onclick="showPopup('HIPER MONKS DUO', 'Si dos personas del clan llegan a 5h de meditar en un día +2 Multi, si no se logra no se ganan puntos.', '10')">
+    <div class="h-32 bg-red-900 bg-opacity-30 rounded mb-4"></div>
+    <h4 class="text-sm mb-2">HIPER MONKS DUO</h4>
+    <p class="coins-display">10 H.COINS</p>
+</div>
+
+<!-- Hiper Readers Duo -->
+<div class="rune-card p-4 rounded cursor-pointer" onclick="showPopup('HIPER READERS DUO', 'Si dos personas del clan llegan a 6h de Leer en un día +2 Multi, si no se logra no se ganan puntos.', '10')">
+    <div class="h-32 bg-red-900 bg-opacity-30 rounded mb-4"></div>
+    <h4 class="text-sm mb-2">HIPER READERS DUO</h4>
+    <p class="coins-display">10 H.COINS</p>
+</div>
+
+<!-- Hiper Working Duo -->
+<div class="rune-card p-4 rounded cursor-pointer" onclick="showPopup('HIPER WORKING DUO', 'Si dos personas del clan llegan a 7h de Deepwork en un día +2 Multi, si no se logra no se ganan puntos.', '10')">
+    <div class="h-32 bg-red-900 bg-opacity-30 rounded mb-4"></div>
+    <h4 class="text-sm mb-2">HIPER WORKING DUO</h4>
+    <p class="coins-display">10 H.COINS</p>
+</div>
+
+<!-- Take My Hand and Go Up -->
+<div class="rune-card p-4 rounded cursor-pointer" onclick="showPopup('TAKE MY HAND AND GO UP', 'Si el top 4 o 3 tienen una racha de 3 derrotas totales, obtienen +2 Multi.', '5')">
+    <div class="h-32 bg-red-900 bg-opacity-30 rounded mb-4"></div>
+    <h4 class="text-sm mb-2">TAKE MY HAND AND GO UP</h4>
+    <p class="coins-display">5 H.COINS</p>
+</div>
+
+<!-- Never Lose Hope -->
+<div class="rune-card p-4 rounded cursor-pointer" onclick="showPopup('NEVER LOSE HOPE', 'Si el top 4 queda en una batalla en top 2 o 1, obtiene +2 Multi para la siguiente batalla (si es la última, se aplicará de inmediato un +1 Multi).', '7')">
+    <div class="h-32 bg-red-900 bg-opacity-30 rounded mb-4"></div>
+    <h4 class="text-sm mb-2">NEVER LOSE HOPE</h4>
+    <p class="coins-display">7 H.COINS</p>
+</div>
+
+</div>
+</div>
+
+<!-- Runas Amarillas -->
+<div class="mb-16">
+    <h3 class="text-xl text-yellow-400 mb-8">RUNAS AMARILLAS</h3>
+    <div class="grid md:grid-cols-3 lg:grid-cols-4 gap-8">
+
+        <!-- Mr Crab -->
+        <div class="rune-card p-4 rounded cursor-pointer" onclick="showPopup('MR CRAB', '10 de los puntos de la batalla se convierten en 1 H.Coin', '8')">
+            <div class="h-32 bg-yellow-900 bg-opacity-30 rounded mb-4"></div>
+            <h4 class="text-sm mb-2">MR CRAB</h4>
+            <p class="coins-display">8 H.COINS</p>
+        </div>
+
+        <!-- Streak of 2 -->
+        <div class="rune-card p-4 rounded cursor-pointer" onclick="showPopup('STREAK OF 2', '2 H.Coins si el top 1 hace una racha de 2 batallas ganadas', '9')">
+            <div class="h-32 bg-yellow-900 bg-opacity-30 rounded mb-4"></div>
+            <h4 class="text-sm mb-2">STREAK OF 2</h4>
+            <p class="coins-display">9 H.COINS</p>
+        </div>
+
+    </div>
+</div>
+
+</section>
+</div>
+</div>
+
+<script>
+// Parallax suave
+let lastScrollTop = 0;
+window.addEventListener('scroll', function() {
+    const scrolled = window.pageYOffset;
+    const parallax = document.querySelector('.parallax-bg');
+    const delta = scrolled - lastScrollTop;
+    lastScrollTop = scrolled;
+    
+    window.requestAnimationFrame(function() {
+        parallax.style.transform = 'translateY(' + (scrolled * 0.5) + 'px)';
+    });
+});
+
+// Animación de fade-in al hacer scroll
+function fadeInOnScroll() {
+    const elements = document.querySelectorAll('.fade-in');
+    elements.forEach(element => {
+        const elementTop = element.getBoundingClientRect().top;
+        const elementBottom = element.getBoundingClientRect().bottom;
+        if (elementTop < window.innerHeight && elementBottom > 0) {
+            element.classList.add('visible');
+        }
+    });
+}
+
+window.addEventListener('scroll', fadeInOnScroll);
+window.addEventListener('load', fadeInOnScroll);
+
+// Funciones del popup
+function showPopup(runeName, runeDescription, runePrice, runeImage) {
+    const popup = document.getElementById('runePopup');
+    popup.style.opacity = '0';
+    popup.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+    
+    const details = popup.querySelector('.rune-details');
+    details.querySelector('h3').textContent = runeName;
+    details.querySelector('p').textContent = runeDescription;
+    details.querySelector('.coins-display span').textContent = runePrice;
+    
+    if (runeImage) {
+        details.querySelector('img').src = runeImage;
+        details.querySelector('img').style.display = 'block';
+    } else {
+        details.querySelector('img').style.display = 'none';
+    }
+
+    setTimeout(() => {
+        popup.style.opacity = '1';
+    }, 10);
+}
+
+function closePopup() {
+    const popup = document.getElementById('runePopup');
+    popup.style.opacity = '0';
+    setTimeout(() => {
+        popup.style.display = 'none';
+        document.body.style.overflow = 'auto';
+    }, 300);
+}
+
+document.getElementById('runePopup').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closePopup();
+    }
+});
+
+// Aplicar la clase fade-in a los elementos que quieres animar
+document.addEventListener('DOMContentLoaded', function() {
+    const sections = document.querySelectorAll('section');
+    sections.forEach(section => {
+        section.classList.add('fade-in');
+    });
+});
+</script>
+
+
+
+
+<script>
+
+
+function closePopup() {
+    const popup = document.getElementById('runePopup');
+    popup.style.display = 'none';
+    document.body.style.overflow = 'auto';
+}
+
+document.getElementById('runePopup').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closePopup();
+    }
+});
+</script>
+
+</body>
+</html>
