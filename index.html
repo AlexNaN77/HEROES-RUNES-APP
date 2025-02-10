@@ -7,6 +7,15 @@
     <link href="https://unpkg.com/tailwindcss@^2/dist/tailwind.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&display=swap" rel="stylesheet">
     <style>
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+         html {
+            scroll-behavior: smooth;
+         }
         body {
             font-family: 'Press Start 2P', cursive;
             background: #0a0a2a;
@@ -628,6 +637,22 @@ document.getElementById('runePopup').addEventListener('click', function(e) {
         closePopup();
     }
 });
+
+    // Observar todos los elementos con la clase fade-in
+        document.querySelectorAll('.fade-in').forEach(element => {
+            observer.observe(element);
+        });
+
+        // Función para scroll suave a los enlaces internos
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const targetId = this.getAttribute('href');
+                document.querySelector(targetId).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
 </script>
 
 </body>
